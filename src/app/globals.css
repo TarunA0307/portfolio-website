@@ -1,0 +1,247 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #05030A;
+  --color-foreground: #F8FAFC;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ─── Base Theme ─── */
+:root {
+  --bg-deep: #05030A;
+  --bg-mid: #0B0719;
+  --bg-surface: #120A2A;
+  --cyan: #00F0FF;
+  --violet: #7C3AED;
+  --violet-bright: #8B5CF6;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124, 58, 237, 0.3) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.3);
+  border-radius: 3px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(0, 240, 255, 0.2);
+  color: #F8FAFC;
+}
+
+/* ─── Noise Texture Overlay ─── */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ─── Ambient Background Glows ─── */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0, 240, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 60% at 20% 80%, rgba(124, 58, 237, 0.08) 0%, transparent 50%);
+}
+
+/* ─── HUD Corner Brackets ─── */
+.hud-bracket {
+  font-family: var(--font-mono), monospace;
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.75rem;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ─── Glassmorphism Card Base ─── */
+.glass-card {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 240, 255, 0.2);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 0 30px rgba(0, 240, 255, 0.05);
+}
+
+/* ─── Holographic Border Hover ─── */
+.holo-border {
+  position: relative;
+}
+
+.holo-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(0, 240, 255, 0.4), rgba(139, 92, 246, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.holo-border:hover::before {
+  opacity: 1;
+}
+
+/* ─── Glow Button ─── */
+.glow-btn {
+  background: linear-gradient(135deg, #00F0FF, #7C3AED);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(124, 58, 237, 0.15);
+  transition: all 0.3s ease;
+}
+
+.glow-btn:hover {
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.5), 0 0 60px rgba(124, 58, 237, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ─── Pulsing Dot ─── */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 4px rgba(0, 240, 255, 0.6);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.9);
+  }
+}
+
+.pulse-dot {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ─── Scanning Line ─── */
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(400%); }
+}
+
+.scan-line {
+  animation: scan-line 3s ease-in-out infinite;
+}
+
+/* ─── Dash Animation ─── */
+@keyframes dash-flow {
+  to { stroke-dashoffset: -20; }
+}
+
+.dash-animate {
+  animation: dash-flow 1.5s linear infinite;
+}
+
+/* ─── Radar Sweep ─── */
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.radar-sweep {
+  animation: radar-sweep 4s linear infinite;
+  transform-origin: center;
+}
+
+/* ─── Float Animation ─── */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ─── Data Packet Travel ─── */
+@keyframes travel-path {
+  0% { offset-distance: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+/* ─── Bar Chart Animation ─── */
+@keyframes bar-grow-1 {
+  0%, 100% { height: 40%; }
+  50% { height: 80%; }
+}
+@keyframes bar-grow-2 {
+  0%, 100% { height: 60%; }
+  50% { height: 30%; }
+}
+@keyframes bar-grow-3 {
+  0%, 100% { height: 75%; }
+  50% { height: 50%; }
+}
+@keyframes bar-grow-4 {
+  0%, 100% { height: 30%; }
+  50% { height: 90%; }
+}
+@keyframes bar-grow-5 {
+  0%, 100% { height: 55%; }
+  50% { height: 70%; }
+}
+
+/* ─── Pipeline Fill ─── */
+@keyframes pipeline-fill {
+  0% { width: 0%; }
+  50% { width: 100%; }
+  100% { width: 0%; }
+}
+
+/* ─── Node Pulse ─── */
+@keyframes node-pulse {
+  0%, 100% { r: 4; opacity: 0.8; }
+  50% { r: 6; opacity: 1; }
+}
+
+/* ─── Connection Pulse ─── */
+@keyframes connection-pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
